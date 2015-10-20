@@ -109,9 +109,8 @@ namespace UrlResolve
                         GetUrl(ews[i + 1], temp_name.Substring(0, temp_idx));
                     }
                 }
-                //progress_max = url_list.Count;
-                MainWindow mw = new MainWindow();
 
+                MainWindow mw = new MainWindow();
                 mw.ProgressInit(url_list.Count);
                 //process url_list
                 for (int i = 0; i < url_list.Count; i++)
@@ -143,7 +142,6 @@ namespace UrlResolve
             url_struct _us;
 
             int rows = ew.Dimension.Rows;// ew.Cells.Rows;
-            
             int start_row = 0;
             int start_col = 2;
 
@@ -197,7 +195,6 @@ namespace UrlResolve
                 Console.WriteLine(sb.ToString());
                 return;
             }
-           
 
             //Console.WriteLine("== GetDownCount ==" + ++test_count);
 
@@ -221,8 +218,8 @@ namespace UrlResolve
                 foreach (var item in anchors)
                 {
                     aCount++;
-                    //tmp_name = item.InnerText;
-                    //TODO 加入解析
+
+                    // 加入解析
                     tmp_name = GetResloveText(item.InnerText, GetSiteName(us.url));
 
                     //StringBuilder sb = new StringBuilder("==anchors ==  Sheet::").Append(us.sheet_name).Append(" Game::").Append(us.game_name).Append(" Platform::").Append(us.platform).Append(" URL::").Append(us.url).Append(" Content::").Append(tmp_name);
@@ -295,7 +292,7 @@ namespace UrlResolve
                             }
 
                             ew.Cells[now_j, col_offset + 5].Value = result_st.count;
-                            Console.WriteLine("==SetDownCount==" + result_st.game_name + "  Platform::" + result_st.platform + " Content::" + result_st.count);
+                            //Console.WriteLine("==SetDownCount==" + result_st.game_name + "  Platform::" + result_st.platform + " Content::" + result_st.count);
                             return;
                         }
                     }
@@ -370,6 +367,7 @@ namespace UrlResolve
                 }
                 else {
                     StringBuilder sb = new StringBuilder("== GetResloveText Not Match==").Append(inStr).Append("##").Append(site).Append("###").Append(regex);
+                    errorList.Add(sb.ToString());
                     Console.WriteLine(sb.ToString());
                 }
 
