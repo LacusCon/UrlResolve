@@ -5,26 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UrlResolve"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button x:Name="UrlResolveBtn" Content="处理进度" HorizontalAlignment="Left" Height="60" Margin="103,126,0,0" VerticalAlignment="Top" Width="149" Click="UrlResolve_Click"/>        
-        <ProgressBar x:Name="ProgressNow" HorizontalAlignment="Left" Height="26" Margin="103,211,0,0" VerticalAlignment="Top" Width="149" Value="50"/>
-        <!--<ProgressBar x:Name="ColorBar" Margin="103,247,265,55"  OverridesDefaultStyle="True" RenderTransformOrigin="0.5,0.5" Value="1">
-            <ProgressBar.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </ProgressBar.RenderTransform>
-            <ProgressBar.Foreground>
-                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                    <GradientStop Color="#FF24EE27" Offset="0"/>
-                    <GradientStop Color="#FF5434AC" Offset="0.5"/>
-                    <GradientStop Color="#FFB371EA" Offset="1"/>
-                </LinearGradientBrush>
-            </ProgressBar.Foreground>
-        </ProgressBar>-->
+        Title="MainWindow" Height="194" Width="264.5">
+    <Grid HorizontalAlignment="Left" Width="254" Margin="0,0,0,6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="316*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="UrlResolveBtn" Content="处理进度" HorizontalAlignment="Left" Height="60" Margin="55,20,0,0" VerticalAlignment="Top" Width="149" Click="UrlResolve_Click"/>
+        <ProgressBar x:Name="ProgressNow" HorizontalAlignment="Left" Height="26" Margin="55,98,0,0" VerticalAlignment="Top" Width="149" Value="{Binding progressOC}"/>
     </Grid>
 </Window>

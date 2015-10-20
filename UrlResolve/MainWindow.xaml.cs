@@ -22,10 +22,15 @@ namespace UrlResolve
     /// </summary>
     public partial class MainWindow : Window
     {
+        //用于绑定OperaList的数据集
+        ObservableCollection<ProgressStruct> progressOC = new ObservableCollection<ProgressStruct>();
+        ProgressStruct ps = new ProgressStruct();
 
         public MainWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();            
+            ps.ProgressNow = 20;
+            progressOC.Add(ps);
         }
                 
         private void UrlResolve_Click(object sender, RoutedEventArgs e)
@@ -35,8 +40,7 @@ namespace UrlResolve
             er.ReadExcel();
 
             //CheckTest();
-            //TestChg();
-
+            //TestChg();            
             MessageBox.Show("== Mission Completed ==");
         }
 
@@ -121,8 +125,8 @@ namespace UrlResolve
 
         public void SetProgress(int progress)
         {
-            ProgressNow.Value = progress;
-            //ProgressNow.SetBinding 
+            //ProgressNow.Value = progress;
+            ps.ProgressNow = progress;
             
             //ColorBar.Value = progress;
             //ProgressNow.Dispatcher.Invoke(new Action<System.Windows.DependencyProperty, object>(ProgressNow.SetValue), System.Windows.Threading.DispatcherPriority.Background,ProgressBar.ValueProperty, progress);

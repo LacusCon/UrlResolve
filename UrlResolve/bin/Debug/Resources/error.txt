@@ -3,3 +3,4 @@
 ==Error== GetDownCount  aCount Sheet::银魂  Plateform::UC Game::银魂拼图 Result:0
 ==Error== GetDownCount  aCount Sheet::银魂  Plateform::豌豆荚 Game::银魂拼图 Result:0
 ==Error== GetDownCount  aCount Sheet::银魂  Plateform::UC Game::银魂消消看 Result:0
+==Error== GetDownCount  aCount Sheet::银魂  Plateform::百度 Game::银魂爱消除 Result:0
