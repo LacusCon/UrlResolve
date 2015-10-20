@@ -20,7 +20,7 @@ namespace UrlResolve
     {
 
         private string excel_inpath = @"Resources\url_set.xlsx";
-        //private string template = @"Resources\template.xlsx";
+        private string error_log = @"Resources\error.txt";
 
         private List<string> game_url_page = new List<string>();
 
@@ -58,17 +58,6 @@ namespace UrlResolve
             platform_list.Add("豌豆荚");//豌豆荚
             platform_list.Add("小米");//小米
 
-
-            //web_key.Add("App Store", "");//App Store
-            //web_key.Add("百度", @"//span[@class='download-num']");//百度
-            //web_key.Add("腾讯", @"//div[@class='det-ins-num']");//腾讯
-            //web_key.Add("360", @"//span[@class='s-3']");//360[2个]
-            //web_key.Add("九游", "");//九游
-            //web_key.Add("UC", @"//span[@class='detail-info-down']");//UC  
-            //web_key.Add("PP助手", @"//li[@class='borderR']");//PP助手 3
-            //web_key.Add("豌豆荚", @"//i[@itemprop='interactionCount']");//豌豆荚 special
-            //web_key.Add("小米", @"//div[@class='info-words']");//小米 div info-words(special)
-            
             web_key.Add("apple.com", @"");
             web_key.Add("baidu.com", @"//span[@class='download-num']");
             web_key.Add("qq.com", @"//div[@class='det-ins-num']");
@@ -90,7 +79,7 @@ namespace UrlResolve
             regex_key.Add("360.cn", @"^下载：(.*)次");
             regex_key.Add("9game.cn", @"");//no
             regex_key.Add("pp.cn", @"(.*)次下载");
-            regex_key.Add("25pp.com", @"^(.*)次下载");
+            regex_key.Add("25pp.com", @"^(\d+)");
             regex_key.Add("wandoujia.com", @"(.*)");
             regex_key.Add("xiaomi.com", @"^\n.*\n.*\n.*\n.*(\d+.*)次");
             regex_key.Add("mi.com", @"");//no      
@@ -123,22 +112,22 @@ namespace UrlResolve
                 //progress_max = url_list.Count;
                 MainWindow mw = new MainWindow();
 
+                mw.ProgressInit(url_list.Count);
                 //process url_list
                 for (int i = 0; i < url_list.Count; i++)
                 {
+                    mw.SetProgress(i);
                     if (url_list[i].platform.Equals("App Store") 
                         || url_list[i].platform.Equals("九游"))//TODO 忽视apple, 九游
                     {
                         continue;
                     }
                     GetDownCount(url_list[i]);
-                    mw.SetProgress(i, url_list.Count);
                 }
 
                 //write to excel
                 for (int i = 0; i < result_list.Count; i++)
                 {
-                    
                     SetDownCount(ews, result_list[i]);
                 }
 
@@ -223,7 +212,7 @@ namespace UrlResolve
 
                 if (anchors == null || (anchors != null && anchors.Count == 0))
                 {
-                    StringBuilder sb = new StringBuilder("==Error== GetDownCount  aCount Sheet::").Append(us.sheet_name).Append("  Plateform::").Append(us.platform).Append(" Result:0");
+                    StringBuilder sb = new StringBuilder("==Error== GetDownCount  aCount Sheet::").Append(us.sheet_name).Append("  Plateform::").Append(us.platform).Append(" Game::").Append(us.game_name).Append(" Result:0");
                     errorList.Add(sb.ToString());
                     Console.WriteLine(sb.ToString());
                     return;
@@ -236,16 +225,16 @@ namespace UrlResolve
                     //TODO 加入解析
                     tmp_name = GetResloveText(item.InnerText, GetSiteName(us.url));
 
-                    StringBuilder sb = new StringBuilder("==anchors ==  Sheet::").Append(us.sheet_name).Append(" Game::").Append(us.game_name).Append(" Platform::").Append(us.platform).Append(" URL::").Append(us.url).Append(" Content::").Append(tmp_name);
-                    Console.WriteLine(sb.ToString());
+                    //StringBuilder sb = new StringBuilder("==anchors ==  Sheet::").Append(us.sheet_name).Append(" Game::").Append(us.game_name).Append(" Platform::").Append(us.platform).Append(" URL::").Append(us.url).Append(" Content::").Append(tmp_name);
+                    //Console.WriteLine(sb.ToString());
                     break;
                 }
 
                 if (aCount > 2)//TODO
                 {
-                    StringBuilder sb = new StringBuilder("==Error== GetDownCount  aCount Sheet::").Append(us.sheet_name).Append("  Plateform::").Append(us.platform).Append(" ##").Append(aCount);
-                    errorList.Add(sb.ToString());
-                    Console.WriteLine(sb.ToString());
+                    //StringBuilder sb = new StringBuilder("==Error== GetDownCount  aCount Sheet::").Append(us.sheet_name).Append("  Plateform::").Append(us.platform).Append(" ##").Append(aCount);
+                    //errorList.Add(sb.ToString());
+                    //Console.WriteLine(sb.ToString());
                     return;
                 }
 
@@ -305,9 +294,7 @@ namespace UrlResolve
                                 }
                             }
 
-                            //ew.Cells[now_j, col_offset + 3].Text = result_st.count;//列的偏移需要取
                             ew.Cells[now_j, col_offset + 5].Value = result_st.count;
-                            //ews[sheet_idx].Cells[now_j, col_offset + 5].Value = result_st.count;
                             Console.WriteLine("==SetDownCount==" + result_st.game_name + "  Platform::" + result_st.platform + " Content::" + result_st.count);
                             return;
                         }
@@ -374,12 +361,16 @@ namespace UrlResolve
                     StringBuilder sb = new StringBuilder("==Error== 不能解析的链接 URL::").Append(site);
                     errorList.Add(sb.ToString());
                     Console.WriteLine(sb.ToString());
-                    return sRes;
+                    return sRes;                    
                 }
 
                 if (Regex.IsMatch(inStr, regex))
                 {
                     sRes = Regex.Match(inStr, regex).Groups[1].Value;
+                }
+                else {
+                    StringBuilder sb = new StringBuilder("== GetResloveText Not Match==").Append(inStr).Append("##").Append(site).Append("###").Append(regex);
+                    Console.WriteLine(sb.ToString());
                 }
 
                 sRes = ChangeFormat(sRes);
@@ -439,8 +430,32 @@ namespace UrlResolve
 
         private void LogOut() {
 
-        }
+            string sys_path = System.AppDomain.CurrentDomain.BaseDirectory + error_log;
 
+            try
+            {
+
+                UTF8Encoding utf8 = new UTF8Encoding(false);
+                StreamWriter sw = new StreamWriter(sys_path, false, utf8);
+                for (int i = 0; i < errorList.Count; i++)
+                {
+                    //开始写入
+                    sw.WriteLine(errorList[i]);
+                }
+                //清空缓冲区
+                sw.Flush();
+                //关闭流
+                sw.Close();
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("写文件发生错误" + ex);
+            }
+            finally
+            {
+
+            }
+        }
 
     }
 }

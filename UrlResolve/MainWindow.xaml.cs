@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HtmlAgilityPack;
+using System.Collections.ObjectModel;
 
 namespace UrlResolve
 {
@@ -21,21 +22,19 @@ namespace UrlResolve
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
-
-
-
+                
         private void UrlResolve_Click(object sender, RoutedEventArgs e)
         {
+            //SetProgress(0, 0);
             ExcelReslove er = new ExcelReslove();
             er.ReadExcel();
 
             //CheckTest();
-
             //TestChg();
 
             MessageBox.Show("== Mission Completed ==");
@@ -112,9 +111,21 @@ namespace UrlResolve
             }
         }
 
-        public void SetProgress(int progress, int max)
+        public void ProgressInit(int max) {
+            ProgressNow.Minimum = 0;
+            ProgressNow.Maximum = max;
+
+            //ColorBar.Minimum = 20;
+            //ColorBar.Maximum = max;
+        }
+
+        public void SetProgress(int progress)
         {
-            UrlResolveBtn.Content = new StringBuilder("当前处理进度：").Append(progress).Append(" / ").Append(max);
+            ProgressNow.Value = progress;
+            //ProgressNow.SetBinding 
+            
+            //ColorBar.Value = progress;
+            //ProgressNow.Dispatcher.Invoke(new Action<System.Windows.DependencyProperty, object>(ProgressNow.SetValue), System.Windows.Threading.DispatcherPriority.Background,ProgressBar.ValueProperty, progress);
         }
 
     }

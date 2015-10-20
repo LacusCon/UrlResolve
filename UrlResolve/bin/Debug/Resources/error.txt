@@ -1,0 +1,5 @@
+==Error== GetDownCount Sheet::银魂  Plateform::UC
+==Error== GetDownCount Sheet::银魂  Plateform::小米
+==Error== GetDownCount  aCount Sheet::银魂  Plateform::UC Game::银魂拼图 Result:0
+==Error== GetDownCount  aCount Sheet::银魂  Plateform::豌豆荚 Game::银魂拼图 Result:0
+==Error== GetDownCount  aCount Sheet::银魂  Plateform::UC Game::银魂消消看 Result:0
